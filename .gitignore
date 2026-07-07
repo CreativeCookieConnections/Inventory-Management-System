@@ -1,0 +1,3 @@
+ims-server/node_modules/
+ims-server/.env
+ims-server/.env.*
