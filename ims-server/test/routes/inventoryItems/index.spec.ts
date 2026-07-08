@@ -2,8 +2,10 @@
  * Author: Aisha Keller
  * Date: 07/08/2026
  * File: ims-server/routes/inventoryItems/index.js
- * Description: File for testing creating inventory items in the database
+ * Description: File for testing creating inventory items in the database Sprint 1 Week 6
  */
+
+import inventoryItem from "../../../src/models/inventory-item";
 
 const request = require('supertest');
 const app = require('../../../app');
@@ -49,4 +51,24 @@ describe('POST /inventoryItems', () => {
         expect(response.body.message).toContain('must be >= 0'); // Check for quantity validation error
         expect(response.body.message).toContain('must be >= 0'); // Check for price validation error
     });
+
+    it('should handle server errors gracefully', async () => {
+        inventoryItem.response.mockRejectedValue(new Error('Database error')); // Mock a server error
+
+        const response = await request(app).post('/api/inventoryItems').send({
+            id: 1,
+            categoryId: 1,
+            supplierId: 1,
+            name: 'Test Item',
+            description: 'This is a test item',
+            quantity: 10,
+            price: 19.99,
+            dateCreated: '2026-07-08T00:00:00.000Z',
+            dateModified: '2026-07-08T00:00:00.000Z',
+        });
+
+        expect(response.status).toBe(500);
+        expect(response.body.message).toBe('Internal Server Error');
+    });
 });
+
