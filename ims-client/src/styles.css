@@ -1,0 +1,501 @@
+/* =========================================================================
+   Inventory Management System (IMS) — Stylesheet
+
+   Structure:
+     1. Design Tokens (CSS Custom Properties)
+     2. Global / Reset
+     3. Layout
+     4. Navbar
+     5. Page Header
+     6. Toolbar (search + primary action)
+     7. Forms
+     8. Buttons
+     9. Table (Inventory / Supplier lists)
+     10. Utility Classes
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. Design Tokens
+   Core palette: dark navy header, medium blue
+   accent/primary actions, blue-gray page background,
+   view/edit/delete action colors.
+   ------------------------------------------------------------------------- */
+:root {
+  /* Brand */
+  --color-navy-900: #2c3e50;       /* navbar background */
+  --color-blue-700: #2e75b6;       /* table header background */
+  --color-blue-600: #3a7bc8;       /* primary buttons, links, focus rings */
+  --color-blue-600-hover: #2f66ac;
+
+  /* Neutrals */
+  --color-bg-page: #f5f7fa;        /* app background */
+  --color-bg-header-band: #e9edf5; /* page title band */
+  --color-bg-surface: #ffffff;     /* cards, form panels, table rows */
+  --color-bg-surface-alt: #f8f9fb; /* zebra-striped rows */
+  --color-border: #cbd5e0;         /* input & card borders */
+  --color-border-light: #e2e8f0;   /* row dividers */
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-text-inverse: #ffffff;
+  --color-placeholder: #a0aec0;
+
+  /* Semantic action colors (View / Edit / Delete buttons) */
+  --color-action-view-bg: #dbeafe;
+  --color-action-view-text: #1d4ed8;
+  --color-action-edit-bg: #dcfce7;
+  --color-action-edit-text: #15803d;
+  --color-action-delete-bg: #fee2e2;
+  --color-action-delete-text: #b91c1c;
+
+  /* Feedback (validation) */
+  --color-success-bg: #dcfce7;
+  --color-success-text: #15803d;
+  --color-error-bg: #fee2e2;
+  --color-error-text: #b91c1c;
+  --color-error-border: #f87171;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Radius / shadow */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(58, 123, 200, 0.25);
+
+  /* Typography */
+  --font-family-base: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   2. Global / Reset
+   ------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -------------------------------------------------------------------------
+   3. Layout
+   ------------------------------------------------------------------------- */
+
+/* Outer app shell — full-height flex column: navbar, header band, content */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Constrains and centers page content beneath the navbar/header */
+.page-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-5);
+}
+
+/* -------------------------------------------------------------------------
+   4. Navbar
+   Dark navy bar with app title on the left, nav links on the right.
+   ------------------------------------------------------------------------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-navy-900);
+  color: var(--color-text-inverse);
+  padding: var(--space-4) var(--space-6);
+}
+
+.navbar__brand {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__link {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+  transition: color 0.15s ease;
+}
+
+.navbar__link:hover,
+.navbar__link:focus-visible {
+  color: var(--color-text-inverse);
+}
+
+.navbar__link--active {
+  color: var(--color-text-inverse);
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------
+   5. Page Header
+   Light band beneath the navbar holding the page title (e.g. "Inventory
+   Items", "Create Inventory Item").
+   ------------------------------------------------------------------------- */
+.page-header {
+  background-color: var(--color-bg-header-band);
+  padding: var(--space-5) var(--space-6);
+}
+
+.page-header__title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-navy-900);
+}
+
+/* -------------------------------------------------------------------------
+   6. Toolbar
+   Row containing the search input (left) and primary "+ Create New" action
+   (right), as seen above the inventory table.
+   ------------------------------------------------------------------------- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.toolbar__search {
+  flex: 1;
+  max-width: 360px;
+}
+
+/* -------------------------------------------------------------------------
+   7. Forms
+   Card-style panel used by Create/Edit forms (e.g. "Create Inventory Item").
+   ------------------------------------------------------------------------- */
+.form-card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+.form-row > .form-group {
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-4);
+}
+
+.form-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+/* Asterisk marker for required fields, e.g. "Item Name *" */
+.form-label__required {
+  color: var(--color-action-delete-text);
+  margin-left: var(--space-1);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--color-placeholder);
+}
+
+.form-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  padding-right: var(--space-6);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-blue-600);
+  box-shadow: var(--shadow-focus);
+}
+
+/* Inline validation message */
+.form-error {
+  font-size: var(--font-size-sm);
+  color: var(--color-error-text);
+  margin-top: var(--space-2);
+}
+
+.form-input--invalid,
+.form-select--invalid {
+  border-color: var(--color-error-border);
+}
+
+/* Footnote below form actions, e.g. "* Required fields" */
+.form-note {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-4);
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+/* -------------------------------------------------------------------------
+   8. Buttons
+   Base button + variants for primary actions, secondary/cancel actions, and
+   the row-level actions (View / Edit / Delete) used in the table.
+   ------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-5);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* Primary — "Submit", "+ Create New" */
+.btn--primary {
+  background-color: var(--color-blue-600);
+  border-color: var(--color-blue-600);
+  color: var(--color-text-inverse);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-blue-600-hover);
+}
+
+/* Secondary — "Cancel" */
+.btn--secondary {
+  background-color: var(--color-bg-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-bg-surface-alt);
+}
+
+/* Disabled state — e.g. deleting a supplier with active items */
+.btn:disabled,
+.btn--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Small button variant used inside table rows */
+.btn--sm {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+/* Semantic row actions */
+.btn--view {
+  background-color: var(--color-action-view-bg);
+  color: var(--color-action-view-text);
+}
+
+.btn--view:hover {
+  filter: brightness(0.95);
+}
+
+.btn--edit {
+  background-color: var(--color-action-edit-bg);
+  color: var(--color-action-edit-text);
+}
+
+.btn--edit:hover {
+  filter: brightness(0.95);
+}
+
+.btn--delete {
+  background-color: var(--color-action-delete-bg);
+  color: var(--color-action-delete-text);
+}
+
+.btn--delete:hover {
+  filter: brightness(0.95);
+}
+
+/* -------------------------------------------------------------------------
+   9. Table
+   Used for the Inventory Items and Suppliers list views.
+   ------------------------------------------------------------------------- */
+.data-table-wrapper {
+  background-color: var(--color-bg-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background-color: var(--color-blue-700);
+}
+
+.data-table th {
+  text-align: left;
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: var(--space-4);
+}
+
+.data-table td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-primary);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background-color: var(--color-bg-surface-alt);
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--color-bg-header-band);
+}
+
+/* Column intended for the action button group (View / Edit / Delete) */
+.data-table__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* Empty-state row/message when no items match a search */
+.data-table__empty {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--space-7);
+}
+
+/* -------------------------------------------------------------------------
+   10. Utility Classes
+   ------------------------------------------------------------------------- */
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Success / error — Visibility of System Status
+    shown after form submissions */
+.sysStatus {
+  position: fixed;
+  top: var(--space-5);
+  right: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-card);
+}
+
+.sysStatus--success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.sysStatus--error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+}
