@@ -11,10 +11,10 @@ const Ajv = require('ajv');
 const createError = require('http-errors');
 const router = express.Router();
 const { itemInventory } = require('../../models/itemInventory');
-const { addItemInventory } = require('../../schemas/itemInventory');
+const { addItemInventory } = require('../../schemas');
 
 const ajv = new Ajv();
-const validateAddItemInventory = ajv.compile(addItemInventory);
+const validateAddItemInventory = ajv.compile(addItemInventorySchema);
 
 // POST request to create an inventory item Sprint 1 Student A Week 6
 router.post('/', async (req, res, next) => {
