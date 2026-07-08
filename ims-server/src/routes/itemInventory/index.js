@@ -30,7 +30,7 @@ router.post('/', async (req, res, next) => {
 
         res.end({
             message: 'Inventory item created successfully',
-            itemInventoryId: newItemInventory._id
+            itemInventoryId: newItemInventory.inventoryItemId
         })
     } catch (err) {
         console.error(`Error while creating garden: ${err}`);
