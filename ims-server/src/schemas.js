@@ -17,10 +17,9 @@ const addInventoryItemSchema = {
        quantity: { type: 'number', minimum: 0 },
        price: { type: 'number', minimum: 0 },
        dateCreated: { type: 'string', pattern: '^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z)?$' }, // YYYY-MM-DD format
-       dateUpdated: { type: 'string', pattern: '^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z)?$' } // YYYY-MM-DD format
-
+       
     },
-    required: ['itemInventoryId', 'categoryId', 'supplierId', 'name', 'description', 'quantity', 'price', 'dateCreated', 'dateUpdated']
+    required: ['itemInventoryId', 'categoryId', 'supplierId', 'name', 'description', 'quantity', 'price', 'dateCreated'],
 };
 
 module.exports = {
