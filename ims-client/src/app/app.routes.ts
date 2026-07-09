@@ -6,9 +6,7 @@
  */
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { CategoriesComponent } from './categories/categories.component';
 import { InventoryManagementComponent } from './inventory/inventory-management/inventory-management.component';
-import { suppliersComponent } from './suppliers/suppliers.component';
 import { InventoryItemAddComponent } from './inventory/inventoryItem-add/inventoryItem-add.component';
 
 
@@ -33,33 +31,15 @@ export const inventoryManagementRoutes: Routes = [
     // Add more inventory management routes here as needed
 ];
 
-// Export categories routes
-export const categoriesRoutes: Routes = [
-    {
-        path: '',
-        redirectTo: 'categories',
-        pathMatch: 'full'
-    },
-    {
-        path: 'categories',
-        component: CategoriesComponent,
-    },
+// Export categories routes here 
+
 
     // Add more categories routes here as needed
-];
 
-// Export suppliers routes
-export const suppliersRoutes: Routes = [
-    {
-        path: '',
-        redirectTo: 'suppliers',
-        pathMatch: 'full'
-    },
-    {  
-        path: 'suppliers',
-        component: suppliersComponent,
-    },
+
+// Export suppliers routes here
+
 
     // Add more suppliers routes here as needed
-];
+
 
