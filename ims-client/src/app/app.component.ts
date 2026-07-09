@@ -1,25 +1,65 @@
-/**
- * Author: Inventory Management System Group 3
- * Date: 07/08/2026
- * File: app.component.ts
- * Description: This file contains the main component of the Inventory Management System application. It serves as the root component that bootstraps the application and provides the overall structure and layout for the user interface. The component is responsible for rendering the main navigation, header, footer, and routing to different views within the application.
- */
-
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
   template: `
-   <router-outlet />
+<!--
+  AppComponent (selector: app-root)
+  Route: /
+  TDD Section 4.2 (Component Documentation): Root application component
+  that bootstraps the Angular app, renders the navigation bar, and hosts the
+  router outlet for all child views.
+
+  This template only owns the persistent app shell (navbar) shown on view.
+  The page title band (.page-header), toolbar, and content itself belong to each routed child component
+  (e.g. ListInventoryItemsComponent, CreateInventoryItemComponent), which are
+  rendered into <router-outlet>. Classes reference styles.css.
+-->
+<div class="app-shell">
+
+  <!-- Persistent top navigation — matches wireframe header bar -->
+  <nav class="navbar">
+    <h1 class="navbar__brand">IMS — Inventory Management System</h1>
+
+    <ul class="navbar__links">
+      <li>
+        <a
+          class="navbar__link"
+          routerLink="/inventory-items"
+          routerLinkActive="navbar__link--active"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          Inventory
+        </a>
+      </li>
+      <li>
+        <a
+          class="navbar__link"
+          routerLink="/suppliers"
+          routerLinkActive="navbar__link--active"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          Suppliers
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Routed views (ListInventoryItemsComponent, CreateInventoryItemComponent,
+       ListSuppliersComponent, etc.) render here, each supplying its own
+       .page-header and .page-content per the wireframes. -->
+  <router-outlet></router-outlet>
+
+</div>
   `,
-  styles: `
-  
-  `
+  styleUrl: '../styles.css',
 })
+
 export class AppComponent {
+  title = 'Inventory Management System (IMS)';
 
 }
 
