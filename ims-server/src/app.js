@@ -19,7 +19,7 @@ const indexRouter = require('./routes/index');
 // Variable declaration for the express app
 let app = express();
 
-const connectionString = process.env.MONGODB_URI || 'mongodb+srv://gm_user:s3cret@bellevueuniversity.bfy9zvm.mongodb.net/?appName=BellevueUniversity';
+const connectionString = process.env.MONGODB_URI || 'mongodb+srv://greenfieldANS:Password1@web450.6iupbaw.mongodb.net/?appName=WEB450';
 const dbName = process.env.MONGODB_DB_NAME || 'gms';
 
 mongoose.connect(connectionString, { dbName })
