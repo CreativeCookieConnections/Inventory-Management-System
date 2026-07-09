@@ -9,8 +9,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { InventoryItemAddComponent } from './inventoryItem-add.component';
 import { environment } from '../../../environments/environment';
-import it from '@angular/common/locales/extra/it';
-import it from '@angular/common/locales/extra/it';
 
 describe('InventoryItemAddComponent', () => {
     let component: InventoryItemAddComponent;
@@ -19,8 +17,7 @@ describe('InventoryItemAddComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            declarations: [InventoryItemAddComponent]
+            imports: [InventoryItemAddComponent, HttpClientTestingModule]
         }).compileComponents();
 
         fixture = TestBed.createComponent(InventoryItemAddComponent);
