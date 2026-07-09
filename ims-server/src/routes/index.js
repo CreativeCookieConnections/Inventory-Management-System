@@ -8,7 +8,7 @@
 // require statements
 const express = require('express');
 const router = express.Router();
-const iventoryItems = require('./inventoryItems');
+const inventoryItems = require('./inventoryItems');
 
 router.get('/', function(req, res, next) {
     const appName = 'Inventory Management System';
@@ -17,6 +17,6 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.use('/itemInventory', inventoryItems);
+router.use('/inventoryItems', inventoryItems);
 
 module.exports = router;

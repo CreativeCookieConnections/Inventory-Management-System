@@ -10,8 +10,8 @@ const Ajv = require('ajv');
 const createError = require('http-errors');
 const router = express.Router();
 
-const { InventoryItem } = require('../../models/inventoryItem');
-const { addInventoryItemSchema } = require('../../schemas/inventoryItemSchema');
+const { InventoryItem } = require('../../models/inventory-item.js');
+const { addInventoryItemSchema } = require('../../schemas.js');
 
 const ajv = new Ajv();
 const validateAddInventoryItem = ajv.compile(addInventoryItemSchema);

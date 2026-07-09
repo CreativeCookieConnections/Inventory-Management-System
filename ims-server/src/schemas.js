@@ -6,20 +6,21 @@
  */
 
 // Add a validation schema for adding new Item Inventory to the Inventory Management System (IMS)
-const addItemSchema = {
+const addInventoryItemSchema = {
     type: 'object',
     properties: {
-        categoryId: { type: 'number', required: true },
-        supplierId: { type: 'number', required: true },
-        name: { type: 'string', minLength: 2, maxLength: 100, required: true },
+        categoryId: { type: 'number' },
+        supplierId: { type: 'number' },
+        name: { type: 'string', minLength: 2, maxLength: 100 },
         description: { type: 'string', maxLength: 250 },
-        quantity: { type: 'number', minimum: 0, required: true },
-        price: { type: 'number', minimum: 0, required: true },
+        quantity: { type: 'number', minimum: 0 },
+        price: { type: 'number', minimum: 0 },
 
-    }
+    },
+    required: ['categoryId', 'supplierId', 'name', 'quantity', 'price']
 };
 
 module.exports = {
-    addItemSchema
+    addInventoryItemSchema
 };
 
