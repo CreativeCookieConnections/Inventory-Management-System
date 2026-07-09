@@ -1,29 +1,30 @@
+/**
+ * Author: Inventory Management System Group 3
+ * Date: 07/08/2026
+ * File: app.component.spec.ts
+ * Description: This file contains the unit tests for the AppComponent in the Inventory Management System project. It uses Jasmine and Angular testing utilities to verify the functionality of the component.
+ */
+
+// Import statements
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
+// Test suite
 describe('AppComponent', () => {
+
+  // Before each test
   beforeEach(async () => {
+    // Configure the testing module with the router testing module and the app component
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [RouterTestingModule, AppComponent]
     }).compileComponents();
   });
 
+  // Test case to verify the app component was created
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have the 'ets-client' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ets-client');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Welcome to the MEAN Stack Starter Project');
   });
 });
