@@ -6,7 +6,8 @@
  */
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { InventoryItemAddComponent } from './inventory/inventoryItem-add/inventoryItem-add.component';
+import { InventoryItemAddComponent } from './Inventory/inventoryItem-add/inventoryItem-add.component';
+import { InventoryItemListComponent } from './Inventory/inventory-item-list/inventory-item-list.component';
 
 export const routes: Routes = [
     {
@@ -15,8 +16,7 @@ export const routes: Routes = [
     },
     {
         path: 'inventory-items',
-        redirectTo: 'inventory-items/add',
-        pathMatch: 'full'
+        component: InventoryItemListComponent
     },
     {
         path: 'inventory-items/add',

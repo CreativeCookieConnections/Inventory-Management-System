@@ -56,5 +56,5 @@ inventoryItemSchema.pre('save', function (next) {
 });
 
 module.exports = {
-  InventoryItem: mongoose.model('InventoryItem', inventoryItemSchema)
+  InventoryItem: mongoose.model('InventoryItem', inventoryItemSchema, 'inventoryItems')
 };

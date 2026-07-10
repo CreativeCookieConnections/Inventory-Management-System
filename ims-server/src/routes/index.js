@@ -13,4 +13,7 @@ router.get('/', (req, res) => {
   res.json({ message: 'Inventory Management System API' });
 });
 
+const inventoryItemsRouter = require('./inventoryItems');
+router.use('/inventory-items', inventoryItemsRouter);
+
 module.exports = router;
