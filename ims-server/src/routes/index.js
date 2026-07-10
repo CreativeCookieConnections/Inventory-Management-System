@@ -1,22 +1,16 @@
 /**
- * Author: Aisha Keller
- * Date: 07/08/2026
- * File: index.js
- * Description: Routing for the index page of the inventory management system.
+ * Author: Nicholas Skelton
+ * Date: 07/09/2026
+ * File: routes/index.js
+ * Description: Root API router
  */
 
-// require statements
 const express = require('express');
 const router = express.Router();
-const inventoryItems = require('./inventoryItems');
 
-router.get('/', function(req, res, next) {
-    const appName = 'Inventory Management System';
-    res.send({
-        message: `Hello from the ${appName} API!`
-    });
+// Placeholder root route to confirm API is up
+router.get('/', (req, res) => {
+  res.json({ message: 'Inventory Management System API' });
 });
-
-router.use('/inventoryItems', inventoryItems);
 
 module.exports = router;
