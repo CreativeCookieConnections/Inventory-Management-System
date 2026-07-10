@@ -62,3 +62,4 @@ export class AppComponent {
   title = 'Inventory Management System (IMS)';
 
 }
+
