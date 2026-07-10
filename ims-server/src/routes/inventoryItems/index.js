@@ -16,6 +16,19 @@ const { addInventoryItemSchema } = require('../../schemas.js');
 const ajv = new Ajv();
 const validateAddInventoryItem = ajv.compile(addInventoryItemSchema);
 
+/**
+ * GET /api/inventory-items
+ * Returns all inventory items.
+ */
+router.get('/', async (req, res, next) => {
+  try {
+    const items = await InventoryItem.find();
+    res.json(items);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // POST request to add a new item to the inventory
 router.post('/', async (req, res, next) => {
     try {
