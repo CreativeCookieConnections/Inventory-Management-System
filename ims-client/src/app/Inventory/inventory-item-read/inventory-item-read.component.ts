@@ -3,9 +3,7 @@
  * Date: 07/09/2026
  * File: ims-client/src/app/Inventory/inventoryItem-read/inventoryItem-read.component.ts
  * Description: Angular component that looks up and displays a single
- * inventory item by ID (US-04, TDD Section 1.5; component spec in
- * Section 4.2 — selector app-read-inventory-item, route
- * /inventory-items/:id, dependencies: HttpClient, ActivatedRoute).
+ * inventory item by ID
  *
  * This component also contains an ID search form
  *   - Visited as /inventory-items/:id (a deep link) — the id comes from
@@ -16,18 +14,12 @@
  *     displays the item inline, below the form, without navigating away.
  * Both paths share the same fetch logic and the same result markup.
  *
- * Note: the TDD component description also calls for resolving and
- * displaying the linked category name and supplier name. There is no
- * "read category by ID" endpoint in the API design (Section 3.2) and the
- * suppliers routes are not implemented yet, so this component currently
- * shows the raw categoryId/supplierId. Swap in name lookups once those
- * endpoints exist.
  */
 
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -48,7 +40,7 @@ export interface InventoryItem {
 @Component({
   selector: 'app-read-inventory-item',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   template: `
     <section class="page-content">
       <h2>Lookup Inventory Item by ID</h2>
@@ -100,21 +92,43 @@ export interface InventoryItem {
           <div *ngIf="!loading && !error && item">
             <h2>{{ item.name }}</h2>
             <p *ngIf="item.description">{{ item.description }}</p>
-            <dl>
-              <dt>Category ID</dt>
-              <dd>{{ item.categoryId }}</dd>
-              <dt>Supplier ID</dt>
-              <dd>{{ item.supplierId }}</dd>
-              <dt>Quantity</dt>
-              <dd>{{ item.quantity }}</dd>
-              <dt>Price</dt>
-              <dd>{{ item.price | currency }}</dd>
-              <dt>Date Created</dt>
-              <dd>{{ item.dateCreated | date }}</dd>
-              <dt>Date Modified</dt>
-              <dd>{{ item.dateModified | date }}</dd>
-            </dl>
+            <div class="data-table-wrapper">
+              <table class="data-table">
+                <tbody>
+                  <tr>
+                    <th>Category ID</th>
+                    <td>{{ item.categoryId }}</td>
+                  </tr>
+                  <tr>
+                    <th>Supplier ID</th>
+                    <td>{{ item.supplierId }}</td>
+                  </tr>
+                  <tr>
+                    <th>Quantity</th>
+                    <td>{{ item.quantity }}</td>
+                  </tr>
+                  <tr>
+                    <th>Price</th>
+                    <td>{{ item.price | currency }}</td>
+                  </tr>
+                  <tr>
+                    <th>Date Created</th>
+                    <td>{{ item.dateCreated | date }}</td>
+                  </tr>
+                  <tr>
+                    <th>Date Modified</th>
+                    <td>{{ item.dateModified | date }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+          <button
+            routerLink="/inventory-items"
+            class="btn btn--secondary"
+          >
+            Back
+          </button>
         </div>
       </div>
     </section>
@@ -126,15 +140,33 @@ export interface InventoryItem {
       padding-top: var(--space-5, 24px);
       border-top: 1px solid var(--color-border-light, #e2e8f0);
     }
+
+    /* This table uses th as a row label (not a column header), so override
+       the global .data-table th header styling (blue bg, white uppercase
+       text) with plain black label text, and stripe the first row instead
+       of the second. */
+    .lookup-result .data-table th {
+      background-color: transparent;
+      color: var(--color-text-primary, #1f2937);
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .lookup-result .data-table tbody tr:nth-child(odd) {
+      background-color: var(--color-bg-surface-alt, #f8f9fb);
+    }
+
+    .lookup-result .data-table tbody tr:nth-child(even) {
+      background-color: var(--color-bg-surface, #ffffff);
+    }
+
+    .btn.btn--secondary {
+      margin-top: 1em;
+    }
   `,
 })
 export class ReadInventoryItemComponent implements OnInit {
-  // Bug fix: `fb`/`route`/`http` must be assigned before the `lookupForm`
-  // field initializer runs (it calls `this.fb.group(...)`). Constructor
-  // parameter properties are assigned too late relative to other field
-  // initializers, which TypeScript flags as "used before initialization".
-  // Using `inject()` at the top of the class body avoids the ordering
-  // problem entirely and is the standard pattern for standalone components.
+
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
@@ -195,6 +227,7 @@ export class ReadInventoryItemComponent implements OnInit {
       .subscribe({
         next: (result) => {
           this.item = result;
+          this.loading = false;
         },
         error: () => {
           this.error = 'Inventory item not found.';

@@ -6,9 +6,9 @@
  */
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { InventoryItemAddComponent } from './Inventory/inventoryItem-add/inventoryItem-add.component';
 import { InventoryItemListComponent } from './Inventory/inventory-item-list/inventory-item-list.component';
-import { InventoryItemAddComponent } from './inventory/inventory-item-add/inventory-item-add.component';
+import { InventoryItemAddComponent } from './Inventory/inventory-item-add/inventory-item-add.component';
+import { ReadInventoryItemComponent } from './Inventory/inventory-item-read/inventory-item-read.component';
 
 export const routes: Routes = [
     {
@@ -22,6 +22,14 @@ export const routes: Routes = [
     {
         path: 'inventory-items/add',
         component: InventoryItemAddComponent
+    },
+    {
+        path: 'inventory-items/lookup',
+        component: ReadInventoryItemComponent
+    },
+    {
+        path: 'inventory-items/:id',
+        component: ReadInventoryItemComponent
     },
     {
         path: '**',
