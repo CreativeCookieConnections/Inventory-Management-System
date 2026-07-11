@@ -22,13 +22,15 @@ let app = express();
 const connectionString = process.env.MONGODB_URI || 'mongodb+srv://greenfieldANS:Password1@web450.6iupbaw.mongodb.net/?appName=WEB450';
 const dbName = process.env.MONGODB_DB_NAME || 'inventoryDB';
 
-mongoose.connect(connectionString, { dbName })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((err) => {
-    console.error(`MongoDB connection error: ${err}`);
-  });
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect(connectionString, { dbName })
+    .then(() => {
+      console.log('Connected to MongoDB');
+    })
+    .catch((err) => {
+      console.error(`MongoDB connection error: ${err}`);
+    });
+}
 
 // CORS configuration
 app.use((req, res, next) => {

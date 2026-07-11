@@ -9,7 +9,7 @@
  */
 
 const request = require('supertest');
-const app = require('../../../app');
+const app = require('../../../src/app');
 const { InventoryItem } = require('../../../src/models/inventory-item');
 
 // Replace the real Mongoose model with an auto-mock for this test file.
