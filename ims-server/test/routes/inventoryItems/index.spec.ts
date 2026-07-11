@@ -18,7 +18,7 @@ jest.mock('../../../src/models/inventory-item.js', () => ({
     InventoryItem: Object.assign(jest.fn(), { findById: jest.fn() })
 }));
 
-describe('POST /api/inventoryItems', () => {
+describe('POST /api/inventory-items', () => {
     const validPayload = {
         categoryId: 1,
         supplierId: 2,
@@ -41,7 +41,7 @@ describe('POST /api/inventoryItems', () => {
         }));
 
         const response = await request(app)
-        .post('/api/inventoryItems')
+        .post('/api/inventory-items')
         .send(validPayload);
 
         expect(response.status).toBe(201);
@@ -61,7 +61,7 @@ describe('POST /api/inventoryItems', () => {
         };
 
         const response = await request(app)
-        .post('/api/inventoryItems')
+        .post('/api/inventory-items')
         .send(invalidPayload);
 
         expect(response.status).toBe(400);
@@ -77,7 +77,7 @@ describe('POST /api/inventoryItems', () => {
         }));
 
         const response = await request(app)
-        .post('/api/inventoryItems')
+        .post('/api/inventory-items')
         .send(validPayload);
 
         expect(response.status).toBe(500);
