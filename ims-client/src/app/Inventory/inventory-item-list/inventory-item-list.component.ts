@@ -1,5 +1,5 @@
 /**
- * Author: [Your name]
+ * Author: Nicholas Skelton
  * Date: 07/09/2026
  * File: inventory-item-list.component.ts
  * Description: Fetches and displays all inventory items. Acts as the
