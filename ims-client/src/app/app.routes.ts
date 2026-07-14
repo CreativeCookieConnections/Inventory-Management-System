@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { InventoryItemListComponent } from './Inventory/inventory-item-list/inventory-item-list.component';
 import { InventoryItemAddComponent } from './Inventory/inventory-item-add/inventory-item-add.component';
 import { ReadInventoryItemComponent } from './Inventory/inventory-item-read/inventory-item-read.component';
+import { InventoryItemDeleteComponent } from './Inventory/inventory-item-delete/inventory-item-delete.component';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,10 @@ export const routes: Routes = [
     {
         path: 'inventory-items/lookup',
         component: ReadInventoryItemComponent
+    },
+    {
+        path: 'inventory-items/:id/delete',
+        component: InventoryItemDeleteComponent
     },
     {
         path: 'inventory-items/:id',

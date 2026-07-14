@@ -90,6 +90,40 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
+/**
+ * DELETE /api/inventory-items/:id
+ * Sprint 1 | Shannon Kueneke
+ * File: ims-server/src/routes/inventoryItems/index.js
+ *
+ * Deletes a single inventory item by its MongoDB _id. Responds 404 (via
+ * the shared error-handler middleware) both when no document matches a
+ * well-formed id, and when the id itself is not a valid ObjectId —
+ * mirroring the GET /:id behavior above.
+ */
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const deletedItem = await InventoryItem.findByIdAndDelete(req.params.id);
+
+        if (!deletedItem) {
+            return next(createError(404, 'Inventory item not found'));
+        }
+
+        res.status(200).json({
+            message: 'Inventory item deleted successfully',
+            item: deletedItem
+        });
+    } catch (err) {
+        // Mongoose throws a CastError when :id isn't a validly-formatted
+        // ObjectId (e.g. "abc123") — treat that the same as "not found"
+        // rather than surfacing it as a 500 server error.
+        if (err.name === 'CastError') {
+            return next(createError(404, 'Inventory item not found'));
+        }
+        console.error(`Error while deleting inventory item: ${err}`);
+        next(err);
+    }
+});
+
 module.exports = router;
 
 
