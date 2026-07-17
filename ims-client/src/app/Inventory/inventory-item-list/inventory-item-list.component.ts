@@ -35,9 +35,14 @@ interface InventoryItem {
     <section class="page-content">
       <div class="page-header page-header--with-action">
         <h2 class="page-header__title">Inventory Items</h2>
-        <a class="btn btn--primary" routerLink="/inventory-items/add">
-          + Create New
-        </a>
+        <div class="page-header__actions">
+          <a class="btn btn--primary" routerLink="/inventory-items/search">
+            Search
+          </a>
+          <a class="btn btn--primary" routerLink="/inventory-items/add">
+            + Create New
+          </a>
+        </div>
       </div>
 
       <p *ngIf="loading">Loading inventory items...</p>
@@ -126,7 +131,13 @@ interface InventoryItem {
       background: #f5f7fa;
     }
 
-    .page-header--with-action .btn--primary {
+    .page-header__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .page-header--with-action .btn {
       text-decoration: none;
       border-radius: 10px;
       font-size: 1.05rem;
