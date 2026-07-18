@@ -1,5 +1,5 @@
 /**
- * Author: [Your name]
+ * Author: Nicholas Skelton
  * Date: 07/10/2026
  * File: inventory-item-list.component.spec.ts
  * Description: Unit tests for InventoryItemListComponent — verifies items

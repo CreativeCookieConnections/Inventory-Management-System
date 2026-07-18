@@ -60,6 +60,51 @@ router.post('/', async (req, res, next) => {
 });
 
 /**
+ * Author: Nicholas Skelton
+ * Date: 07/16/2026 /  Sprint 2
+ * File: ims-server/src/routes/itemInventory/index.js
+
+ * GET /api/inventory-items/search
+ * Query params (all optional, combine with AND):
+ *   name        - partial, case-insensitive match against item name
+ *   categoryId  - exact match, numeric
+ *   supplierId  - exact match, numeric
+ **/
+router.get('/search', async (req, res, next) => {
+  try {
+    const { name, categoryId, supplierId } = req.query;
+
+    if (categoryId !== undefined && Number.isNaN(Number(categoryId))) {
+      return next(createError(400, 'Query parameter "categoryId" must be a number'));
+    }
+    if (supplierId !== undefined && Number.isNaN(Number(supplierId))) {
+      return next(createError(400, 'Query parameter "supplierId" must be a number'));
+    }
+
+    const filter = {};
+
+    if (name) {
+      const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      filter.name = { $regex: escapedName, $options: 'i' };
+    }
+
+    if (categoryId !== undefined) {
+      filter.categoryId = Number(categoryId);
+    }
+
+    if (supplierId !== undefined) {
+      filter.supplierId = Number(supplierId);
+    }
+
+    const items = await InventoryItem.find(filter);
+    res.status(200).json(items);
+  } catch (err) {
+    console.error(`Error while searching inventory items: ${err}`);
+    next(err);
+  }
+});
+
+/**
  * GET /api/inventory-items/:id
  * Sprint 1 | Shannon Kueneke 
  * File: ims-server/src/routes/itemInventory/index.js
