@@ -16,4 +16,8 @@ router.get('/', (req, res) => {
 const inventoryItemsRouter = require('./inventoryItems');
 router.use('/inventory-items', inventoryItemsRouter);
 
+//added in router for suppliers
+const suppliersRouter = require('./suppliers');
+router.use('/suppliers', suppliersRouter);
+
 module.exports = router;

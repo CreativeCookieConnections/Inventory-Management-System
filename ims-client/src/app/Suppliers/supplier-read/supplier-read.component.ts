@@ -1,19 +1,18 @@
 /**
  * Author: Shannon Kueneke
- * Date: 07/09/2026
- * File: ims-client/src/app/Inventory/inventoryItem-read/inventoryItem-read.component.ts
+ * Date: 07/20/2026
+ * File: ims-client/src/app/Suppliers/supplier-read/supplier-read.component.ts
  * Description: Angular component that looks up and displays a single
- * inventory item by ID
+ * supplier by ID, mirroring ReadInventoryItemComponent.
  *
  * This component also contains an ID search form
- *   - Visited as /inventory-items/:id (a deep link) — the id comes from
- *     the route, the form is pre-filled with it, and the item is fetched
+ *   - Visited as /suppliers/:id (a deep link) — the id comes from the
+ *     route, the form is pre-filled with it, and the supplier is fetched
  *     and displayed automatically.
- *   - Visited as /inventory-items/lookup (no id in the route) — the form
- *     starts empty; entering an id and clicking Search fetches and
- *     displays the item inline, below the form, without navigating away.
+ *   - Visited as /suppliers/lookup (no id in the route) — the form starts
+ *     empty; entering an id and clicking Search fetches and displays the
+ *     supplier inline, below the form, without navigating away.
  * Both paths share the same fetch logic and the same result markup.
- *
  */
 
 import { Component, OnInit, inject } from '@angular/core';
@@ -23,48 +22,45 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-// Shape of a single inventoryItems document — see TDD Section 2.4
-// (NoSQL Data Structure) and src/models/inventory-item.js on the server.
-export interface InventoryItem {
+// Shape of a single suppliers document — see src/models/supplier.js on the server.
+export interface Supplier {
   _id: string;
-  categoryId: number;
   supplierId: number;
-  name: string;
-  description?: string;
-  quantity: number;
-  price: number;
+  supplierName: string;
+  contactInformation: string;
+  address?: string;
   dateCreated: string;
   dateModified: string;
 }
 
 @Component({
-  selector: 'app-read-inventory-item',
+  selector: 'app-read-supplier',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   template: `
     <section class="page-content">
-      <h2>Lookup Inventory Item by ID</h2>
+      <h2>Lookup Supplier by ID</h2>
       <div class="form-card">
         <!-- ID search form -->
         <form [formGroup]="lookupForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label class="form-label" for="itemId">
-              Inventory Item ID
+            <label class="form-label" for="supplierId">
+              Supplier ID
               <span class="form-label__required">*</span>
             </label>
             <input
-              id="itemId"
+              id="supplierId"
               class="form-input"
               type="text"
               formControlName="id"
-              placeholder="e.g. 6a4854e94c76763dc2628ca0"
+              placeholder="e.g. 1"
             />
             <!-- Inline validation error — only shown after the field has been touched -->
             <p
               class="form-error"
               *ngIf="idControl.invalid && idControl.touched"
             >
-              Please enter an inventory item ID.
+              Please enter a supplier ID.
             </p>
           </div>
 
@@ -85,54 +81,45 @@ export interface InventoryItem {
           a manual search submission.
         -->
         <div *ngIf="hasSearched" class="lookup-result">
-          <p *ngIf="loading">Loading inventory item...</p>
+          <p *ngIf="loading">Loading supplier...</p>
 
           <p *ngIf="!loading && error" class="form-error">{{ error }}</p>
 
-          <div *ngIf="!loading && !error && item">
-            <h2>{{ item.name }}</h2>
-            <p *ngIf="item.description">{{ item.description }}</p>
+          <div *ngIf="!loading && !error && supplier">
+            <h2>{{ supplier.supplierName }}</h2>
             <div class="data-table-wrapper">
               <table class="data-table">
                 <tbody>
                   <tr>
-                    <th>Category ID</th>
-                    <td>{{ item.categoryId }}</td>
-                  </tr>
-                  <tr>
                     <th>Supplier ID</th>
-                    <td>{{ item.supplierId }}</td>
+                    <td>{{ supplier.supplierId }}</td>
                   </tr>
                   <tr>
-                    <th>Quantity</th>
-                    <td>{{ item.quantity }}</td>
+                    <th>Supplier Name</th>
+                    <td>{{ supplier.supplierName }}</td>
                   </tr>
                   <tr>
-                    <th>Price</th>
-                    <td>{{ item.price | currency }}</td>
+                    <th>Contact Information</th>
+                    <td>{{ supplier.contactInformation }}</td>
+                  </tr>
+                  <tr>
+                    <th>Address</th>
+                    <td>{{ supplier.address }}</td>
                   </tr>
                   <tr>
                     <th>Date Created</th>
-                    <td>{{ item.dateCreated | date }}</td>
+                    <td>{{ supplier.dateCreated | date }}</td>
                   </tr>
                   <tr>
                     <th>Date Modified</th>
-                    <td>{{ item.dateModified | date }}</td>
+                    <td>{{ supplier.dateModified | date }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <!-- Added so users can jump from the read view into the update form. By Aisha Keller Sprint 2 -->
-          <a
-            *ngIf="item"
-            [routerLink]="['/inventory-items', item._id, 'edit']"
-            class="btn btn--primary"
-          >
-            Edit Item
-          </a>
           <button
-            routerLink="/inventory-items"
+            routerLink="/suppliers"
             class="btn btn--secondary"
           >
             Back
@@ -142,11 +129,6 @@ export interface InventoryItem {
     </section>
   `,
   styles: `
-    .btn.btn--primary {
-      text-decoration:none;
-      margin-right:2em;
-    }
-
     /* Visually separates the result from the form above it */
     .lookup-result {
       margin-top: var(--space-5, 24px);
@@ -178,7 +160,7 @@ export interface InventoryItem {
     }
   `,
 })
-export class ReadInventoryItemComponent implements OnInit {
+export class ReadSupplierComponent implements OnInit {
 
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
@@ -191,7 +173,7 @@ export class ReadInventoryItemComponent implements OnInit {
   });
 
   // Result state, rendered inline below the form
-  item: InventoryItem | null = null;
+  supplier: Supplier | null = null;
   loading = false;
   error: string | null = null;
   hasSearched = false;
@@ -202,10 +184,12 @@ export class ReadInventoryItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Route param name ("id") matches the /inventory-items/:id path
-    // registered in app.routes.ts. When present (a deep link), pre-fill
-    // the form and search immediately; when absent (/inventory-items/lookup),
-    // leave the form empty and wait for a manual submission.
+    // Route param name ("id") matches the /suppliers/:id path registered
+    // in app.routes.ts, and holds the supplier's business supplierId (a
+    // small unique number, e.g. 1, 22 — not MongoDB's internal _id). When
+    // present (a deep link), pre-fill the form and search immediately;
+    // when absent (/suppliers/lookup), leave the form empty and wait for
+    // a manual submission.
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
@@ -226,24 +210,24 @@ export class ReadInventoryItemComponent implements OnInit {
     this.performSearch(id);
   }
 
-  // Shared fetch logic: calls GET /api/inventory-items/:id and renders the
+  // Shared fetch logic: calls GET /api/suppliers/:id and renders the
   // result inline below the form, whether the search was triggered by the
   // route or by the user clicking Search.
   private performSearch(id: string): void {
     this.hasSearched = true;
     this.loading = true;
     this.error = null;
-    this.item = null;
+    this.supplier = null;
 
     this.http
-      .get<InventoryItem>(`${environment.apiBaseUrl}/api/inventory-items/${id}`)
+      .get<Supplier>(`${environment.apiBaseUrl}/api/suppliers/${id}`)
       .subscribe({
         next: (result) => {
-          this.item = result;
+          this.supplier = result;
           this.loading = false;
         },
         error: () => {
-          this.error = 'Inventory item not found.';
+          this.error = 'Supplier not found.';
           this.loading = false;
         },
       });
