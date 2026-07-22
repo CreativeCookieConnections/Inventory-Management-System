@@ -11,8 +11,7 @@ import { InventoryItemAddComponent } from './inventory/inventory-item-add/invent
 import { ReadInventoryItemComponent } from './inventory/inventory-item-read/inventory-item-read.component';
 import { InventoryItemUpdateComponent } from './inventory/inventory-item-update/inventory-item-update.component';
 import { InventoryItemDeleteComponent } from './inventory/inventory-item-delete/inventory-item-delete.component';
-import { InventoryItemSearchComponent } from './Inventory/inventory-item-search/inventory-item-search.component';
-import { ReadSupplierComponent } from './Suppliers/supplier-read/supplier-read.component';
+import { SupplierAddComponent } from './Suppliers/supplier-add/supplier-add.component';
 
 export const routes: Routes = [
     {
@@ -36,10 +35,6 @@ export const routes: Routes = [
         component: InventoryItemDeleteComponent
     },
     {
-        path: 'inventory-items/search',
-        component: InventoryItemSearchComponent
-    },
-    {
         path: 'inventory-items/:id',
         component: ReadInventoryItemComponent
     },
@@ -48,17 +43,8 @@ export const routes: Routes = [
         component: InventoryItemUpdateComponent
     },
     {
-        path: 'suppliers',
-        redirectTo: 'suppliers/lookup', //sk added to check the read supplier by id, remove this when nicholas adds his list all suppliers page
-        pathMatch: 'full' //remove this too
-    },
-    {
-        path: 'suppliers/lookup',
-        component: ReadSupplierComponent
-    },
-    {
-        path: 'suppliers/:id',
-        component: ReadSupplierComponent
+        path: 'suppliers/add',
+        component: SupplierAddComponent
     },
     {
         path: '**',

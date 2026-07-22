@@ -6,10 +6,17 @@
  */
 
 const express = require('express');
+const Ajv = require('ajv'); // JSON schema validator
 const createError = require('http-errors');
 const router = express.Router();
 
+// Import the Supplier model and the schema for validating supplier data
 const { Supplier } = require('../../models/supplier.js');
+const { addSupplierSchema } = require('../../schemas.js');
+
+// Initialize AJV and compile the schema for validating supplier data
+const ajv = new Ajv();
+const validateAddSupplier = ajv.compile(addSupplierSchema);
 
 /**
  * GET /api/suppliers/:id
@@ -40,6 +47,45 @@ router.get('/:id', async (req, res, next) => {
     } catch (err) {
         console.error(`Error while reading supplier: ${err}`);
         next(err);
+    }
+});
+
+/**
+ * POST /api/suppliers
+ * Sprint 3 | Aisha Keller
+ * File: ims-server/src/routes/suppliers/index.js
+ * 
+ * Creates a new supplier document in the database. Expects a JSON body with
+ * the following fields:
+ * - supplierId (Number, required, unique)
+ * - supplierName (String, required)
+ * - contactInformation (String, required)
+ * - address (String, optional)
+ */
+
+// POST route for creating a new supplier Sprint 3 | Week 3
+router.post('/', async (req, res, next) => {
+    try {
+        const valid = validateAddSupplier(req.body);
+        if (!valid) {
+            return next(createError(400, ajv.errorsText(validateAddSupplier.errors)));
+        }
+        
+        const newSupplier = new Supplier({
+            supplierId: req.body.supplierId,
+            supplierName: req.body.supplierName,
+            contactInformation: req.body.contactInformation,
+            address: req.body.address
+        });
+
+        const savedSupplier = await newSupplier.save();
+
+        res.status(201).json({
+            message: 'Supplier created successfully',
+            supplier: savedSupplier
+        });
+        } catch (err) {
+            next(err);
     }
 });
 
