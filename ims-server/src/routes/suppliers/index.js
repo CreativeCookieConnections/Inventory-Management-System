@@ -19,6 +19,25 @@ const ajv = new Ajv();
 const validateAddSupplier = ajv.compile(addSupplierSchema);
 
 /**
+ * GET /api/suppliers
+ * Sprint 3 | Nicholas Skelton
+ * File: ims-server/src/routes/suppliers/index.js
+ *
+ * List All — returns every supplier in the collection, sorted
+ * alphabetically by supplierName. Defined ahead of GET /:id and
+ * GET /search so this router's static routes don't get shadowed.
+ */
+router.get('/', async (req, res, next) => {
+    try {
+        const suppliers = await Supplier.find().sort({ supplierName: 1 });
+        res.status(200).json(suppliers);
+    } catch (err) {
+        console.error(`Error while reading suppliers: ${err}`);
+        next(err);
+    }
+});
+
+/**
  * GET /api/suppliers/:id
  * Sprint 3 | Shannon Kueneke
  * File: ims-server/src/routes/suppliers/index.js

@@ -39,11 +39,10 @@ let supplierSchema = new Schema({
 });
 
 // Keep dateModified current whenever an existing document is updated
-supplierSchema.pre('save', function (next) {
+supplierSchema.pre('save', function () {
   if (!this.isNew) {
     this.dateModified = new Date();
   }
-  next();
 });
 
 module.exports = {
