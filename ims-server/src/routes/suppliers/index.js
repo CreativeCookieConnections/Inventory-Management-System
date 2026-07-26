@@ -108,4 +108,36 @@ router.post('/', async (req, res, next) => {
     }
 });
 
+/**
+ * DELETE /api/suppliers/:id
+ * Sprint 3 | Shannon Kueneke
+ * File: ims-server/src/routes/suppliers/index.js
+ *
+ * Deletes a single supplier by its business supplierId (not MongoDB's
+ * internal _id) — mirroring the GET /:id lookup above. Responds 400 when
+ * :id isn't numeric, and 404 (via the shared error-handler middleware)
+ * when no document matches a well-formed numeric id.
+ */
+router.delete('/:id', async (req, res, next) => {
+    try {
+        if (Number.isNaN(Number(req.params.id))) {
+            return next(createError(400, 'Supplier id must be a number'));
+        }
+
+        const deletedSupplier = await Supplier.findOneAndDelete({ supplierId: Number(req.params.id) });
+
+        if (!deletedSupplier) {
+            return next(createError(404, 'Supplier not found'));
+        }
+
+        res.status(200).json({
+            message: 'Supplier deleted successfully',
+            supplier: deletedSupplier
+        });
+    } catch (err) {
+        console.error(`Error while deleting supplier: ${err}`);
+        next(err);
+    }
+});
+
 module.exports = router;
