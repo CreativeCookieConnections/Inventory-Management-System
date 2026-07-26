@@ -34,7 +34,7 @@ interface Supplier {
       <div class="page-header page-header--with-action">
         <h2 class="page-header__title">Suppliers</h2>
         <div class="page-header__actions">
-          <a class="btn btn--primary" routerLink="/suppliers/search">
+          <a class="btn btn--primary" routerLink="/suppliers/lookup">
             Search
           </a>
           <a class="btn btn--primary" routerLink="/suppliers/add">
@@ -77,19 +77,19 @@ interface Supplier {
               <td>
                 <div class="data-table__actions">
                   <a
-                    [routerLink]="['/suppliers', supplier._id]"
+                    [routerLink]="['/suppliers', supplier.supplierId]"
                     class="btn btn--sm btn--view"
                   >
                     View
                   </a>
                   <a
-                    [routerLink]="['/suppliers', supplier._id, 'edit']"
+                    [routerLink]="['/suppliers', supplier.supplierId, 'edit']"
                     class="btn btn--sm btn--edit"
                   >
                     Edit
                   </a>
                   <a
-                    [routerLink]="['/suppliers', supplier._id, 'delete']"
+                    [routerLink]="['/suppliers', supplier.supplierId, 'delete']"
                     class="btn btn--sm btn--delete"
                   >
                     Delete

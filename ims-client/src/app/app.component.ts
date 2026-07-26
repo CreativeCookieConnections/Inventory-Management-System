@@ -6,7 +6,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet, RouterModule } from '@angul
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
   template: `
-<!--
+    <!--
   AppComponent (selector: app-root)
   Route: /
   TDD Section 4.2 (Component Documentation): Root application component
@@ -18,48 +18,54 @@ import { RouterLink, RouterLinkActive, RouterOutlet, RouterModule } from '@angul
   (e.g. ListInventoryItemsComponent, CreateInventoryItemComponent), which are
   rendered into <router-outlet>. Classes reference styles.css.
 -->
-<div class="app-shell">
+    <div class="app-shell">
+      <!-- Persistent top navigation — matches wireframe header bar -->
+      <nav class="navbar">
+        <h1 class="navbar__brand">IMS — Inventory Management System</h1>
 
-  <!-- Persistent top navigation — matches wireframe header bar -->
-  <nav class="navbar">
-    <h1 class="navbar__brand">IMS — Inventory Management System</h1>
+        <ul class="navbar__links">
+          <li>
+            <a
+              class="navbar__link"
+              routerLink="/"
+              routerLinkActive="navbar__link--active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              class="navbar__link"
+              routerLink="/inventory-items"
+              routerLinkActive="navbar__link--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+            >
+              Inventory
+            </a>
+          </li>
+          <li>
+            <a
+              class="navbar__link"
+              routerLink="/suppliers"
+              routerLinkActive="navbar__link--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+            >
+              Suppliers
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-    <ul class="navbar__links">
-      <li>
-        <a
-          class="navbar__link"
-          routerLink="/inventory-items"
-          routerLinkActive="navbar__link--active"
-          [routerLinkActiveOptions]="{ exact: false }"
-        >
-          Inventory
-        </a>
-      </li>
-      <li>
-        <a
-          class="navbar__link"
-          routerLink="/suppliers"
-          routerLinkActive="navbar__link--active"
-          [routerLinkActiveOptions]="{ exact: false }"
-        >
-          Suppliers
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Routed views (ListInventoryItemsComponent, CreateInventoryItemComponent,
+      <!-- Routed views (ListInventoryItemsComponent, CreateInventoryItemComponent,
        ListSuppliersComponent, etc.) render here, each supplying its own
        .page-header and .page-content per the wireframes. -->
-  <router-outlet></router-outlet>
-
-</div>
+      <router-outlet></router-outlet>
+    </div>
   `,
   styleUrl: '../styles.css',
 })
-
 export class AppComponent {
   title = 'Inventory Management System (IMS)';
-
 }
 
