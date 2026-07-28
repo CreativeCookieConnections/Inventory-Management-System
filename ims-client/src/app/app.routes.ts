@@ -6,15 +6,18 @@
  */
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { InventoryItemListComponent } from './inventory/inventory-item-list/inventory-item-list.component';
-import { InventoryItemAddComponent } from './inventory/inventory-item-add/inventory-item-add.component';
-import { ReadInventoryItemComponent } from './inventory/inventory-item-read/inventory-item-read.component';
-import { InventoryItemUpdateComponent } from './inventory/inventory-item-update/inventory-item-update.component';
-import { InventoryItemDeleteComponent } from './inventory/inventory-item-delete/inventory-item-delete.component';
+import { InventoryItemListComponent } from './Inventory/inventory-item-list/inventory-item-list.component';
+import { InventoryItemAddComponent } from './Inventory/inventory-item-add/inventory-item-add.component';
+import { ReadInventoryItemComponent } from './Inventory/inventory-item-read/inventory-item-read.component';
+import { InventoryItemUpdateComponent } from './Inventory/inventory-item-update/inventory-item-update.component';
+import { InventoryItemDeleteComponent } from './Inventory/inventory-item-delete/inventory-item-delete.component';
 import { InventoryItemSearchComponent } from './Inventory/inventory-item-search/inventory-item-search.component';
 import { SupplierListComponent } from './Suppliers/supplier-list/supplier-list.component';
 import { ReadSupplierComponent } from './Suppliers/supplier-read/supplier-read.component';
 import { SupplierAddComponent } from './Suppliers/supplier-add/supplier-add.component';
+import { SupplierSearchComponent } from './Suppliers/supplier-search/supplier-search.component';
+import { SupplierUpdateComponent } from './Suppliers/supplier-update/supplier-update.component';
+import { SupplierDeleteComponent } from './Suppliers/supplier-delete/supplier-delete.component';
 
 export const routes: Routes = [
     {
@@ -62,8 +65,20 @@ export const routes: Routes = [
         component: ReadSupplierComponent
     },
     {
+        path: 'suppliers/:id/delete',
+        component: SupplierDeleteComponent
+    },
+    {
+        path: 'suppliers/search',
+        component: SupplierSearchComponent
+    },
+    {
         path: 'suppliers/:id',
         component: ReadSupplierComponent
+    },
+    {
+        path: 'suppliers/:id/edit',
+        component: SupplierUpdateComponent
     },
     {
         path: '**',

@@ -59,14 +59,13 @@ describe('GET /api/suppliers/:id', () => {
         expect(Supplier.findOne).not.toHaveBeenCalled();
     });
 });
- 
+
 /**
  * Author: Nicholas Skelton
  * Date: 07/23/2026
  * File: ims-server/test/routes/suppliers/index.spec.ts
- * Description: Unit tests for GET /api/suppliers
  */
- 
+
 describe('GET /api/suppliers', () => {
     afterEach(() => {
         jest.resetAllMocks();
@@ -87,25 +86,69 @@ describe('GET /api/suppliers', () => {
         expect(response.body).toEqual(mockSuppliers);
         expect(sortMock).toHaveBeenCalledWith({ supplierName: 1 });
     });
- 
+
     // Test 2: no suppliers in the collection — still 200, with an empty array
     it('returns 200 and an empty array when there are no suppliers', async () => {
         const sortMock = jest.fn().mockResolvedValue([]);
         Supplier.find.mockReturnValue({ sort: sortMock });
- 
+
         const response = await request(app).get('/api/suppliers');
- 
+
         expect(response.status).toBe(200);
         expect(response.body).toEqual([]);
     });
- 
+
     // Test 3: database failure — passed to next(err), handled as a 500
     it('returns 500 when the database call fails', async () => {
         const sortMock = jest.fn().mockRejectedValue(new Error('Database connection failed'));
         Supplier.find.mockReturnValue({ sort: sortMock });
- 
+
         const response = await request(app).get('/api/suppliers');
- 
+
         expect(response.status).toBe(500);
+    });
+});
+
+describe('GET /api/suppliers/search', () => {
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    // Test 1: name filter only — case-insensitive partial match on supplierName
+    it('returns 200 and matching suppliers when searching by name', async () => {
+        const mockSuppliers = [
+            { supplierId: 1, supplierName: 'Acme Supplies', contactInformation: 'acme@example.com', address: '123 Main St' }
+        ];
+        const sortMock = jest.fn().mockResolvedValue(mockSuppliers);
+        Supplier.find.mockReturnValue({ sort: sortMock });
+
+        const response = await request(app).get('/api/suppliers/search?name=acme');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(mockSuppliers);
+        expect(Supplier.find).toHaveBeenCalledWith({ supplierName: expect.any(RegExp) });
+    });
+
+    // Test 2: supplierId filter only — exact numeric match
+    it('returns 200 and the matching supplier when searching by supplierId', async () => {
+        const mockSuppliers = [
+            { supplierId: 2, supplierName: 'Beta Corp', contactInformation: 'beta@example.com', address: '456 Oak Ave' }
+        ];
+        const sortMock = jest.fn().mockResolvedValue(mockSuppliers);
+        Supplier.find.mockReturnValue({ sort: sortMock });
+
+        const response = await request(app).get('/api/suppliers/search?supplierId=2');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(mockSuppliers);
+        expect(Supplier.find).toHaveBeenCalledWith({ supplierId: 2 });
+    });
+
+    // Test 3: no filters at all — should 400 before ever touching the database
+    it('returns 400 when neither name nor supplierId is provided', async () => {
+        const response = await request(app).get('/api/suppliers/search');
+
+        expect(response.status).toBe(400);
+        expect(Supplier.find).not.toHaveBeenCalled();
     });
 });

@@ -46,11 +46,25 @@ const addSupplierSchema = {
     required: ['supplierId', 'supplierName', 'contactInformation']
 };
 
+// Add validation schema for updating an existing supplier in the Inventory Management System (IMS)
+const updateSupplierSchema = {
+    type: 'object',
+    properties: {
+        supplierId: { type: 'number' },
+        supplierName: { type: 'string', minLength: 2, maxLength: 100 },
+        contactInformation: { type: 'string', maxLength: 100 },
+        address: { type: 'string', maxLength: 250 }
+    },
+    required: ['supplierName', 'contactInformation']
+};
+
+
 
 module.exports = {
     addInventoryItemSchema,
     updateInventoryItemSchema,
-    addSupplierSchema
+    addSupplierSchema,
+    updateSupplierSchema
 };
 
 
