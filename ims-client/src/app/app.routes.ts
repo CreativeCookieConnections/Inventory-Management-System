@@ -15,6 +15,7 @@ import { InventoryItemSearchComponent } from './Inventory/inventory-item-search/
 import { SupplierListComponent } from './Suppliers/supplier-list/supplier-list.component';
 import { ReadSupplierComponent } from './Suppliers/supplier-read/supplier-read.component';
 import { SupplierAddComponent } from './Suppliers/supplier-add/supplier-add.component';
+import { SupplierUpdateComponent } from './Suppliers/supplier-update/supplier-update.component';
 
 export const routes: Routes = [
     {
@@ -64,6 +65,10 @@ export const routes: Routes = [
     {
         path: 'suppliers/:id',
         component: ReadSupplierComponent
+    },
+    {
+        path: 'suppliers/:id/edit',
+        component: SupplierUpdateComponent
     },
     {
         path: '**',
