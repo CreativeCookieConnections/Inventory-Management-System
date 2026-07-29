@@ -156,6 +156,52 @@ router.post('/', async (req, res, next) => {
 });
 
 /**
+ * PUT /api/suppliers/:id
+ * Sprint 3 | Aisha Keller
+ * File: ims-server/src/routes/suppliers/index.js
+ * 
+ * Updates an existing supplier document in the database. Expects a JSON body with
+ * the following fields:
+ * - supplierName (String, optional)
+ * - contactInformation (String, optional)
+ * - address (String, optional)
+ * 
+ * Responds 400 when :id isn't numeric, and 404 (via the shared error-handler middleware)
+ * when no document matches a well-formed numeric id.
+ */
+
+// PUT route for updating an existing supplier Sprint 4 | Week 4
+router.put('/:id', async (req, res, next) => {
+  try {
+    if (Number.isNaN(Number(req.params.id))) {
+      return next(createError(400, 'Supplier id must be a number'));
+    }
+
+    const valid = validateUpdateSupplier(req.body);
+    if (!valid) {
+      return next(createError(400, ajv.errorsText(validateUpdateSupplier.errors)));
+    }
+
+    const updatedSupplier = await Supplier.findOneAndUpdate(
+      { supplierId: Number(req.params.id) },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedSupplier) {
+      return next(createError(404, 'Supplier not found'));
+    }
+
+    res.status(200).json({
+      message: 'Supplier updated successfully',
+      supplier: updatedSupplier
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
  * DELETE /api/suppliers/:id
  * Sprint 3 | Shannon Kueneke
  * File: ims-server/src/routes/suppliers/index.js
