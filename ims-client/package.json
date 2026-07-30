@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "render-deploy": "ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
@@ -34,5 +35,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2"
+  },
+  "engines": {
+    "node": "^20.20.2",
+    "npm": "^10.8.2"
   }
 }
